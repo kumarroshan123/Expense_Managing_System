@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from django.contrib.auth.models import User 
-from .models import BankAccount
+from .models import BankAccount, Expenses
 from .serializers import UserSerializer , BankAccountSerializer , ExpenseSerializer
 from django.shortcuts import get_object_or_404
 
@@ -22,7 +22,13 @@ class BankAccountViewSet(viewsets.ModelViewSet):
         user = get_object_or_404(User, id=user_id)
         serializer.save(user=user)
 
-    
+class ExpenseViewSet(viewsets.ModelViewSet):
+    serializer_class = ExpenseSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        account_id = self.kwargs['account_id']
+        return Expenses.objects.filter(account__user_id=user_id, account_id=account_id)
 
     
 
