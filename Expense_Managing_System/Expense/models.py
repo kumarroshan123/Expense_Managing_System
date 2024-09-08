@@ -10,3 +10,12 @@ class BankAccount(models.Model):
 
     def __str__(self):
         return f"{self.account_name} ({self.account_number})"
+
+class Expenses(models.Model):
+    account = models.ForeignKey(BankAccount, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=20, decimal_places=2)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.amount} - {self.description}"
