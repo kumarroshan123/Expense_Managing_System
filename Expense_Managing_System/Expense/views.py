@@ -30,6 +30,10 @@ class ExpenseViewSet(viewsets.ModelViewSet):
         account_id = self.kwargs['account_id']
         return Expenses.objects.filter(account__user_id=user_id, account_id=account_id)
 
-    
+    def perform_create(self, serializer):
+        user_id = self.kwargs['user_id']
+        account_id = self.kwargs['account_id']
+        account = get_object_or_404(BankAccount, id=account_id, user_id=user_id)
+        serializer.save(account=account)
 
     
